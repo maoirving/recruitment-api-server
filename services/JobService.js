@@ -41,18 +41,28 @@ module.exports.getAllJobs = function (params, cb) {
       resultDta['total'] = count
       resultDta['pagenum'] = pagenum
       resultDta['jobs'] = _.map(jobs, function (job) {
-        job.company = GetCompanyInfo(job.company_id)
+        job.company = {
+          name: '字节跳动科技有限公司',
+          imageUrl:
+            'https://img.bosszhipin.com/beijin/upload/com/logo/20210525/77d60eae41e48b90df64951371a7a07a19f97e2c258c6cead07beaf11928d91b.png?x-oss-process=image/resize,w_120,limit_0',
+          category: '计算机',
+          financingStage: '已上市'
+        }
         return _.omit(job)
       })
       cb(err, resultDta)
     })
   })
 }
-function GetCompanyInfo(id) {
-  return dao.show('CompanyModel', id, function (err, company) {
-    // info['company'] = company
-    // console.log(company)
-    // return company
-    return company
+function doGetAllJobs() {}
+function getCompanyById(info) {
+  return new Promise(function (resolve, reject) {
+    if (!info || !info.id || isNaN(info.id)) return reject('公司ID格式不正确')
+
+    dao.show('CompanyModel', id, function (err, company) {
+      if (err) return reject('获取公司基本信息失败')
+      info['company'] = company
+      return resolve(info)
+    })
   })
 }
