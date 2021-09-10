@@ -56,3 +56,26 @@ function GetCompanyInfo(id) {
     return company
   })
 }
+function getCompanyInfo(info) {
+  return new Promise(function (resolve, reject) {
+    if (!info || !info.company_id || isNaN(info.company_id)) return reject('公司ID格式不正确')
+
+    dao.show('CompanyModel', info.company_id, function (err, company) {
+      if (err) return reject('获取公司基本信息失败')
+      // company.goods_cat = company.getGoodsCat();
+      // info["good"] = good;
+      info = company
+      return resolve(info)
+    })
+  })
+}
+
+module.exports.getCompanyById = function (id, cb) {
+  getCompanyInfo({ company_id: id })
+    .then(function (info) {
+      cb(null, info)
+    })
+    .catch(function (err) {
+      cb(err)
+    })
+}

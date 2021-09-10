@@ -37,5 +37,24 @@ router.get(
     })(req, res, next)
   }
 )
+// 获取公司详情
+router.get(
+  '/:id',
+  // 参数验证
+  function (req, res, next) {
+    if (!req.params.id) {
+      return res.sendResult(null, 400, '公司ID不能为空')
+    }
+    if (isNaN(parseInt(req.params.id))) return res.sendResult(null, 400, '公司ID必须是数字')
+    next()
+  },
+  // 业务逻辑
+  function (req, res, next) {
+    companyServ.getCompanyById(req.params.id, function (err, company) {
+      if (err) return res.sendResult(null, 400, err)
+      return res.sendResult(company, 200, '获取成功')
+    })(req, res, next)
+  }
+)
 
 module.exports = router

@@ -6,7 +6,7 @@ var path = require('path')
 var authorization = require(path.join(process.cwd(), '/modules/authorization'))
 
 // 通过验证模块获取用户管理服务
-var mgrServ = authorization.getService('ManagerService')
+var mgrServ = authorization.getService('UserService')
 
 // 查询用户列表
 router.get(
@@ -77,10 +77,8 @@ router.post(
   function (req, res, next) {
     params = {
       username: req.body.username,
-      password: req.body.password,
-      mobile: req.body.mobile,
-      email: req.body.email,
-      rid: req.body.rid
+      user_type: req.body.user_type,
+      password: req.body.password
     }
     mgrServ.createManager(params, function (err, manager) {
       if (err) return res.sendResult(null, 400, err)

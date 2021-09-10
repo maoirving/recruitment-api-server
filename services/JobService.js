@@ -34,7 +34,6 @@ module.exports.getAllJobs = function (params, cb) {
     conditions['offset'] = offset
     conditions['limit'] = limit
     // conditions['only'] = ['id', 'name', 'type']
-
     dao.list('JobModel', conditions, function (err, jobs) {
       if (err) return cb(err)
       var resultDta = {}
